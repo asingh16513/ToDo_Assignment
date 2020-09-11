@@ -8,6 +8,7 @@ using Application.ToDoItem.Command.AddToDoItem;
 using Application.ToDoItem.Command.UpdateCommand;
 using Application.ToDoItem.Query.DeleteToDoItemQuery;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ToDoService.Controllers
@@ -15,7 +16,7 @@ namespace ToDoService.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ToDoItemsController : BaseController
-    { 
+    {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,11 +32,12 @@ namespace ToDoService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [Route("UpdateToDoItem")]
-        public async Task<ActionResult> UpdateToDoItem(int itemId,[FromBody]UpdateToDoItemCommand command)
+        public async Task<ActionResult> UpdateToDoItem(int itemId, [FromBody]UpdateToDoItemCommand command)
         {
             command.ToDoItem.Id = itemId;
             return Ok(await Mediator.Send(command));
         }
+
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -43,7 +45,7 @@ namespace ToDoService.Controllers
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [Route("DeleteToDoItem")]
         public async Task<ActionResult> DeleteToDoItem([FromQuery]DeleteToDoItemQuery command)
-        { 
+        {
             return Ok(await Mediator.Send(command));
         }
 

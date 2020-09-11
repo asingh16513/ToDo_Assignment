@@ -1,6 +1,6 @@
 using Application.Helper;
 using Application.Interface;
-using Application.Label.Queries.GetLabels;
+using Application.Label.Queries.GetLabels;  
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -16,7 +16,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
+using ToDoService.API.Middleware;
 using ToDoService.Helpers;
+using ToDoService.Middleware;
 
 namespace ToDoService
 {
@@ -30,7 +32,7 @@ namespace ToDoService
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services,ILoggerFactory loggerFactory)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
             services.AddMvc().AddJsonOptions(o =>
@@ -82,8 +84,9 @@ namespace ToDoService
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile("Logs/ToDoService-{Date}.txt", isJson: true);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -94,8 +97,7 @@ namespace ToDoService
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseHttpsRedirection(); 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -103,6 +105,8 @@ namespace ToDoService
             {
                 endpoints.MapControllers();
             });
+            app.UseMiddleware(typeof(ErrorHandling));
+            app.UseMiddleware(typeof(RequestLogging));
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
