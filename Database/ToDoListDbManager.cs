@@ -77,10 +77,10 @@ namespace Database
 
                 if (!string.IsNullOrEmpty(searchString))
                 {
-                    toDoLists = await items.Where(s => s.Name.ToLower().Contains(searchString.ToLower())).Page(pageNumber, pageSize).ToListAsync();
+                    toDoLists = await items.Where(s => s.Name.ToLower().Contains(searchString.ToLower())).DoPaging(pageNumber, pageSize).ToListAsync();
                 }
                 else
-                    toDoLists = await items.Page(pageNumber, pageSize).ToListAsync();
+                    toDoLists = await items.DoPaging(pageNumber, pageSize).ToListAsync();
 
 
                 if (toDoLists != null && toDoLists.Count > 0)

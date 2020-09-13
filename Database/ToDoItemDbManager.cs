@@ -54,10 +54,10 @@ namespace Database
 
                 if (!string.IsNullOrEmpty(searchString))
                 {
-                    return await items.Where(s => s.Name.ToLower().Contains(searchString.ToLower())).Page(pageNumber, pageSize).ToListAsync();
+                    return await items.Where(s => s.Name.ToLower().Contains(searchString.ToLower())).DoPaging(pageNumber, pageSize).ToListAsync();
                 }
                 else
-                    return await items.Page(pageNumber, pageSize).ToListAsync();
+                    return await items.DoPaging(pageNumber, pageSize).ToListAsync();
 
             }
         }
