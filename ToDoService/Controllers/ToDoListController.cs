@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Application.Helper;
+﻿using Application.Helper;
 using Application.ToDoList.Command.AddToDoList;
 using Application.ToDoList.Command.UpdateCommand;
 using Application.ToDoList.Query.DeleteToDoListQuery;
+using Application.ToDoList.Query.SearchToDoList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ToDoService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/{v:apiVersion}/[controller]")]
     public class ToDoListController : BaseController
     {
         [HttpPost]
@@ -55,6 +53,16 @@ namespace ToDoService.Controllers
         public async Task<ActionResult> GetToDoList([FromQuery]EmptyQuery<List<Domain.Models.ToDoListExt>> command)
         {
             return Ok(await Mediator.Send(command));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<Domain.Models.ToDoItemExt>), (int)HttpStatusCode.OK)]
+        [Route("SearchToDoList")]
+        public async Task<ActionResult> SearchToDoItems([FromQuery]SearchToDoListQuery query)
+        {
+            return Ok(await Mediator.Send(query));
         }
     }
 }

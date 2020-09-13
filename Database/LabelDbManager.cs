@@ -1,17 +1,15 @@
-﻿using Domain.Enum;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Database
 {
-    public class LabelDbManager : ILabel
-    {  
+    public class LabelDbManager : ILabelDBManager
+    {
         public async Task<int> AddLabel(Domain.Models.Label label)
         {
             using (var context = new ToDoServiceDBContext())
@@ -21,7 +19,7 @@ namespace Database
             }
         }
 
-        public  async Task<int> DeleteLabelById(int labelId)
+        public async Task<int> DeleteLabelById(int labelId)
         {
             using (var context = new ToDoServiceDBContext())
             {
@@ -49,14 +47,14 @@ namespace Database
             }
         }
 
-        public async Task<int> AssignLabelToItem(int labelId,int[] itemId)
+        public async Task<int> AssignLabelToItem(int labelId, int[] itemId)
         {
             using (var context = new ToDoServiceDBContext())
             {
                 var items = context.ToDoItems;
-                foreach(ToDoItem item in items)
+                foreach (BaseToDoItem item in items)
                 {
-                    if(itemId.Contains(item.Id))
+                    if (itemId.Contains(item.Id))
                     {
                         item.LabelId = labelId;
                     }
@@ -69,7 +67,7 @@ namespace Database
         {
             using (var context = new ToDoServiceDBContext())
             {
-                var items = context.ToDoLists ;
+                var items = context.ToDoLists;
                 foreach (ToDoList list in items)
                 {
                     if (listId.Contains(list.Id))

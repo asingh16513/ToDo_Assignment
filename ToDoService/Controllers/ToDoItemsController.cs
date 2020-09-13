@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Application.Helper;
+﻿using Application.Helper;
 using Application.ToDoItem.Command.AddToDoItem;
 using Application.ToDoItem.Command.UpdateCommand;
 using Application.ToDoItem.Query.DeleteToDoItemQuery;
+using Application.ToDoItem.Query.SearchToDoItem;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ToDoService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/{v:apiVersion}/[controller]")]
     public class ToDoItemsController : BaseController
     {
         [HttpPost]
@@ -38,7 +35,6 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -57,6 +53,16 @@ namespace ToDoService.Controllers
         public async Task<ActionResult> GetToDoItems([FromQuery]EmptyQuery<List<Domain.Models.ToDoItemExt>> command)
         {
             return Ok(await Mediator.Send(command));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<Domain.Models.ToDoItemExt>), (int)HttpStatusCode.OK)]
+        [Route("SearchToDoItem")]
+        public async Task<ActionResult> SearchToDoItems([FromQuery]SearchToDoItemQuery query)
+        {
+            return Ok(await Mediator.Send(query));
         }
     }
 }

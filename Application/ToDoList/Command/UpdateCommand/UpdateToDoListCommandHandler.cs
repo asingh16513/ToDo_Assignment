@@ -4,26 +4,26 @@ using Application.ToDoList.Command.UpdateCommand;
 using MediatR;
 using Persistence;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.ToDoItem.Command.UpdateCommand
 {
-    public class UpdateToDoListHandler : IRequestHandler<UpdateToDoListCommand, int>
+    public class UpdateToDoListCommandHandler : IRequestHandler<UpdateToDoListCommand, int>
     {
         private readonly IUserManager _userAccessor;
-        public UpdateToDoListHandler(IUserManager userAccessor)
+        public UpdateToDoListCommandHandler(IUserManager userAccessor)
         {
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
         }
         public async Task<int> Handle(UpdateToDoListCommand request, CancellationToken cancellationToken)
         {
+            DTOHelper helper = new DTOHelper();
             int userId = _userAccessor.GetUserId();
             request.ToDoList.UserId = userId;
-            var db = GetInstance.Get<IToDoList>();
-            return await db.UpdateToDoList(request.ToDoList);
+            Domain.Models.ToDoList list = helper.MapListDTOToUpdateEntity(request.ToDoList);
+            var db = GetInstance.Get<IToDoListDbManager>();
+            return await db.UpdateToDoList(list);
         }
     }
 }

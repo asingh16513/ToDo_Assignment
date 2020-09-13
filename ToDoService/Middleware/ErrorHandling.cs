@@ -1,9 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks; 
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;  
+using Newtonsoft.Json;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ToDoService.API.Middleware
 {
@@ -29,20 +29,18 @@ namespace ToDoService.API.Middleware
         }
 
         private static Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger logger)
-		{
-			var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+        {
+            var code = HttpStatusCode.InternalServerError;
 
-			//if (ex is appEx.NotFoundException) code = HttpStatusCode.NotFound; 
+            string result = string.Empty;
+            if (code != HttpStatusCode.InternalServerError)
+                result = JsonConvert.SerializeObject(new { error = ex.Message });
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)code;
 
-			string result = string.Empty;
-			if (code != HttpStatusCode.InternalServerError)
-				result = JsonConvert.SerializeObject(new { error = ex.Message });
-			context.Response.ContentType = "application/json";
-			context.Response.StatusCode = (int)code;
+            logger.LogError(ex.ToString());
 
-			logger.LogError(ex.ToString());
-
-			return context.Response.WriteAsync(result);
-		}
-	}
+            return context.Response.WriteAsync(result);
+        }
+    }
 }

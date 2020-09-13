@@ -1,9 +1,5 @@
-﻿using Domain;
-using Domain.Models;
+﻿using Domain.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.User.Command.AuthenticateUser
 {

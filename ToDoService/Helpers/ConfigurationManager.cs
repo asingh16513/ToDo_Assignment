@@ -2,10 +2,6 @@
 using Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ToDoService.Helpers
 {
@@ -21,6 +17,7 @@ namespace ToDoService.Helpers
             //Configure Option using Extensions method
             services.Configure<ApplicationSetting>(configuration.GetSection("ApplicationSettings"));
             services.Configure<ConnectionSettings>(configuration.GetSection("ConnectionStrings"));
+            services.Configure<Logging>(configuration.GetSection("Logging"));
             services.AddSingleton(configuration);
             InitializeDbService.AddDbServiceConfigurations(services);
         }

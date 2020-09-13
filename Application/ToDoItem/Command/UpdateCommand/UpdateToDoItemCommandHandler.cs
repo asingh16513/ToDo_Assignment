@@ -3,27 +3,26 @@ using Application.Interface;
 using MediatR;
 using Persistence;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.ToDoItem.Command.UpdateCommand
 {
-    public class UpdateToDoItemHandler : IRequestHandler<UpdateToDoItemCommand, int>
+    public class UpdateToDoItemCommandHandler : IRequestHandler<UpdateToDoItemCommand, int>
     {
         private readonly IUserManager _userAccessor;
-        public UpdateToDoItemHandler(IUserManager userAccessor)
+        public UpdateToDoItemCommandHandler(IUserManager userAccessor)
         {
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
         }
         public async Task<int> Handle(UpdateToDoItemCommand request, CancellationToken cancellationToken)
         {
+            DTOHelper helper = new DTOHelper();
             int userId = _userAccessor.GetUserId();
-            request.ToDoItem.UpdatedDate = DateTime.Now;
             request.ToDoItem.UserId = userId;
-            var db = GetInstance.Get<IToDoItem>();
-            return await db.UpdateToDoItem(request.ToDoItem);
+            var db = GetInstance.Get<IToDoItemDbManager>();
+            Domain.Models.ToDoItem item = helper.MapItemDTOToUpdateEntity(request.ToDoItem);
+            return await db.UpdateToDoItem(item);
         }
     }
 }

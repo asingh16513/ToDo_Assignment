@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Database.Migrations
 {
@@ -43,9 +43,9 @@ namespace Database.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
-                    LabelId = table.Column<int>(nullable: true,defaultValue:null),
+                    LabelId = table.Column<int>(nullable: true, defaultValue: null),
                     UserId = table.Column<int>(nullable: true, defaultValue: null)
                 },
                 constraints: table =>
@@ -73,7 +73,7 @@ namespace Database.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
                     IsComplete = table.Column<bool>(nullable: false),
                     LabelId = table.Column<int>(nullable: true, defaultValue: null),

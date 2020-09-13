@@ -4,7 +4,6 @@ using MediatR;
 using Persistence;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +18,7 @@ namespace Application.ToDoItem.Query.GetToDoItems
         }
         public async Task<List<Domain.Models.ToDoItemExt>> Handle(EmptyQuery<List<Domain.Models.ToDoItemExt>> request, CancellationToken cancellationToken)
         {
-            var db = GetInstance.Get<IToDoItem>();
+            var db = GetInstance.Get<IToDoItemDbManager>();
             return await db.GetToDoItems(_userAccessor.GetUserId());
         }
     }

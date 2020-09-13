@@ -1,16 +1,15 @@
 ﻿using Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public interface IToDoItem
+    public interface IToDoItemDbManager
     {
-        Task<int> AddToDoItem(Domain.Models.ToDoItem item);
+        Task<int> AddToDoItem(ToDoItem item);
         Task<List<ToDoItemExt>> GetToDoItems(int userId);
         Task<int> UpdateToDoItem(ToDoItem item);
         Task<int> DeleteToDoItem(int itemId);
+        Task<List<ToDoItemExt>> SearchToDoItems(int userId, string searchString, int pageNumber, int pageSize);
     }
 }

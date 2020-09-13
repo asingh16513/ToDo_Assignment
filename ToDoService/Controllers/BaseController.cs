@@ -1,9 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ToDoService.Controllers
 {
@@ -11,7 +7,6 @@ namespace ToDoService.Controllers
     /// Base controller for all API's.
     /// </summary>
     [ApiController]
-    [Route("api/[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
         //Brodcaster to pass on service request.

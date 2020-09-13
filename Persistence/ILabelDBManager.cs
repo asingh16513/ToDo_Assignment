@@ -1,12 +1,9 @@
-﻿using Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public interface ILabel
+    public interface ILabelDBManager
     {
         Task<int> AddLabel(Domain.Models.Label label);
         Task<List<Domain.Models.Label>> GetLabels();

@@ -1,21 +1,17 @@
 using Application.Helper;
 using Application.Interface;
-using Application.Label.Queries.GetLabels;  
+using Application.Label.Queries.GetLabels;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using System.Security.Claims;
 using ToDoService.API.Middleware;
 using ToDoService.Helpers;
 using ToDoService.Middleware;
@@ -29,12 +25,18 @@ namespace ToDoService
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
+            });
             services.AddMvc().AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -47,6 +49,7 @@ namespace ToDoService
             ConfigurationManager.LoadConfigurationSettings(services, Configuration);
             services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
             services.AddTransient<IUserManager, UserManager>();
+            services.AddSingleton<IMD5Hash, MD5HashHelper>();
 
             services.AddAuthentication(x =>
             {
@@ -84,9 +87,8 @@ namespace ToDoService
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddFile("Logs/ToDoService-{Date}.txt", isJson: true);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -97,16 +99,16 @@ namespace ToDoService
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection(); 
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseMiddleware(typeof(ErrorHandling));
+            app.UseMiddleware(typeof(RequestLogging));
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            app.UseMiddleware(typeof(ErrorHandling));
-            app.UseMiddleware(typeof(RequestLogging));
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {

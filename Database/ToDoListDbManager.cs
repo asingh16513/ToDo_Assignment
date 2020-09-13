@@ -1,55 +1,29 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Database
 {
-    public class ToDoListDbManager : IToDoList
+    public class ToDoListDbManager : IToDoListDbManager
     {
         public async Task<int> AddToDoList(ToDoList item)
         {
+            int result = 0;
             using (var context = new ToDoServiceDBContext())
             {
                 context.ToDoLists.Add(item);
-                int result = await context.SaveChangesAsync();
-                //int todoId = item.Id;
-                //await InsertUpdateToDoItems(todoId, item.TodoItems, true);
-                return result;
+                result = await context.SaveChangesAsync();
             }
-        }
-
-        private async Task<int> InsertUpdateToDoItems(int todoId, List<ToDoItem> todoItems, bool insert)
-        {
-            using (var context = new ToDoServiceDBContext())
-            {
-                if (todoItems != null && todoItems.Count > 0)
-                {
-                    for (int i = 0; i < todoItems.Count; i++)
-                    {
-                        ToDoItem item = todoItems[i];
-                        item.ToDoListId = todoId;
-                        if (insert)
-                            context.ToDoItems.Add(item);
-                        else
-                            context.ToDoItems.Update(item);
-                    }
-                    return await context.SaveChangesAsync();
-                }
-                return 0;
-            }
+            return result;
         }
 
         public async Task<List<ToDoListExt>> GetToDoList(int userId)
         {
             using (var context = new ToDoServiceDBContext())
             {
-                //var dbEntityEntry = context.Entry(userId);
-                //dbEntityEntry.CurrentValues.SetValues(ameValuePairProperties);
                 List<ToDoListExt> items = await (from item in context.ToDoLists
                                                  join label in context.Labels
                                                  on item.LabelId equals label.Id
@@ -57,42 +31,90 @@ namespace Database
                                                  select new ToDoListExt
                                                  {
                                                      Id = item.Id,
-                                                     Name=item.Name,
+                                                     Name = item.Name,
                                                      Label = label.Name
-                                                 }).ToListAsync(); 
-                 
-                if (items != null&& items.Count>0)
+                                                 }).ToListAsync();
+
+                if (items != null && items.Count > 0)
                 {
                     foreach (var item in items)
                     {
-                        item.ToDoItems  = await (from to_do_item in context.ToDoItems
+                        item.ToDoItems = new List<ToDoItemExt>();
+                        var db_item = await (from to_do_item in context.ToDoItems
+                                             join label in context.Labels
+                                             on to_do_item.LabelId equals label.Id
+                                             where to_do_item.ToDoListId != null && to_do_item.ToDoListId.Value == item.Id
+                                             select new ToDoItemExt
+                                             {
+                                                 Id = to_do_item.Id,
+                                                 Name = to_do_item.Name,
+                                                 Label = label.Name
+                                             }).ToListAsync();
+
+                        item.ToDoItems.AddRange(db_item);
+                    }
+
+                }
+                return items;
+            }
+        }
+
+        public async Task<List<ToDoListExt>> SearchToDoList(int userId, string searchString, int pageNumber, int pageSize)
+        {
+            List<ToDoListExt> toDoLists = null;
+            using (var context = new ToDoServiceDBContext())
+            {
+                IQueryable<ToDoListExt> items = (from item in context.ToDoLists
                                                  join label in context.Labels
-                                                 on to_do_item.LabelId equals label.Id
-                                                 where to_do_item.ToDoListId == item.Id
-                                                 select new ToDoItemExt
+                                                 on item.LabelId equals label.Id
+                                                 where item.UserId == userId
+                                                 select new ToDoListExt
                                                  {
                                                      Id = item.Id,
                                                      Name = item.Name,
                                                      Label = label.Name
-                                                 }).ToListAsync();
+                                                 });
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    toDoLists = await items.Where(s => s.Name.ToLower().Contains(searchString.ToLower())).Page(pageNumber, pageSize).ToListAsync();
+                }
+                else
+                    toDoLists = await items.Page(pageNumber, pageSize).ToListAsync();
+
+
+                if (toDoLists != null && toDoLists.Count > 0)
+                {
+                    foreach (var item in toDoLists)
+                    {
+                        item.ToDoItems = new List<ToDoItemExt>();
+                        var db_item = await (from to_do_item in context.ToDoItems
+                                             join label in context.Labels
+                                             on to_do_item.LabelId equals label.Id
+                                             where to_do_item.ToDoListId != null && to_do_item.ToDoListId.Value == item.Id
+                                             select new ToDoItemExt
+                                             {
+                                                 Id = to_do_item.Id,
+                                                 Name = to_do_item.Name,
+                                                 Label = label.Name
+                                             }).ToListAsync();
+
+                        item.ToDoItems.AddRange(db_item);
                     }
-                }                
-                return items;
+
+                }
+                return toDoLists;
             }
         }
 
         public async Task<int> UpdateToDoList(ToDoList item)
         {
             int result = 0;
-            int todoId = 0;
             using (var context = new ToDoServiceDBContext())
             {
                 context.ToDoLists.Update(item);
-                context.ToDoLists.Attach(item).Property(x => x.CreateDate).IsModified = false;
                 result = await context.SaveChangesAsync();
-                todoId = item.Id;
             }
-            //await InsertUpdateToDoItems(todoId, item.TodoItems, false);
             return result;
         }
 

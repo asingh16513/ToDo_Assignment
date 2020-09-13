@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Models
+﻿namespace Domain.Models
 {
     public class ApplicationSetting
-    { 
+    {
         public string AuthenticationTokenSecret { get; set; }
-
-        public LoggingConfiguration LoggingConfiguration { get; set; }
     }
 
     public class ConnectionSettings
@@ -16,9 +10,13 @@ namespace Domain.Models
         public string DefaultConnection { get; set; }
     }
 
-    public class LoggingConfiguration
+    public class Logging
     {
-        public bool IsDevelopmentLogsEnabled { get; set; }
-        public string LogFileBasePath { get; set; }
+        public LogLevel LogLevel { get; set; }
+    }
+
+    public class LogLevel
+    {
+        public string Default { get; set; }
     }
 }

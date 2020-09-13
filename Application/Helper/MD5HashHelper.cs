@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Application.Interface;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Application.Helper
 {
-    public static class MD5HashHelper
+    public class MD5HashHelper : IMD5Hash
     {
-        public static string MD5Hash(string text)
+        public string GetMD5Hash(string text)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
 

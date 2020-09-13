@@ -1,14 +1,11 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Database
 {
-    public class UserDbManager : IUser
+    public class UserDbManager : IUserDbManager
     {
         public async Task<User> AuthenticateUser(string userName, string password)
         {

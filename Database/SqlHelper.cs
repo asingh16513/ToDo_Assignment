@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Database
 {
     public abstract class SqlHelper : IDbHelper
     {
-        private const int _DefaultCommandTimeout = 2400;       
+        private const int _DefaultCommandTimeout = 2400;
         private readonly string _connectionString;
 
         public SqlHelper(string connectionString)

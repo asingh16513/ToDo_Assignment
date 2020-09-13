@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
-    public class ToDoItem : BaseItem
+    [Table("ToDoItems")]
+    public class ToDoItem : BaseToDoItem
     {
-        public bool IsComplete { get; set; }
-        public int ToDoListId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public int? ToDoListId { get; set; }
 
     }
 }

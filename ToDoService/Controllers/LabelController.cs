@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Application.Helper;
+﻿using Application.Helper;
 using Application.Label.Command.AddLabel;
 using Application.Label.Command.AssignItemLabel;
 using Application.Label.Command.AssignLabelToList;
@@ -11,11 +6,13 @@ using Application.Label.Queries.DeleteLabelById;
 using Application.Label.Queries.GetLabelById;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ToDoService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/{v:apiVersion}/[controller]")]
     public class LabelController : BaseController
     {
         [HttpGet]
