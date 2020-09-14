@@ -33,7 +33,7 @@ namespace ToDoService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(); 
 
             services.AddApiVersioning(x =>
             {
@@ -41,11 +41,12 @@ namespace ToDoService
                 x.AssumeDefaultVersionWhenUnspecified = true;
                 x.ReportApiVersions = true;
             });
-            services.AddMvc().AddJsonOptions(o =>
+            services.AddMvc(p=>p.RespectBrowserAcceptHeader=true).AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
                 o.JsonSerializerOptions.DictionaryKeyPolicy = null;
-            });
+            })
+            .AddXmlSerializerFormatters();
             services.AddMediatR(typeof(GetLabelListHandler).Assembly);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
