@@ -1,8 +1,6 @@
 using Application.Helper;
 using Application.Interface;
 using Application.Label.Queries.GetLabels;
-using AutoMapper;
-using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

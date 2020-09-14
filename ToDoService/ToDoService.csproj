@@ -42,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Helpers\JsonPatchDocumentExtension.cs" />
     <Compile Remove="Helpers\MappingHelper.cs" />
   </ItemGroup>
 

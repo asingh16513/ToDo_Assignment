@@ -99,6 +99,20 @@ namespace Database
         }
 
         /// <summary>
+        /// Method to get todoitem by id
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        public async Task<BaseToDoItem> GetToDoItem(int itemId)
+        {
+            using (var context = new ToDoServiceDBContext())
+            {
+                var item = await context.ToDoItems.FindAsync(itemId);
+                return item;
+            }
+        }
+
+        /// <summary>
         /// Method to delete todoitem by id
         /// </summary>
         /// <param name="itemId"></param>

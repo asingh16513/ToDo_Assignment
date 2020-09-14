@@ -4,7 +4,6 @@ using Application.ToDoItem.Command.UpdateCommand;
 using Application.ToDoItem.Query.DeleteToDoItemQuery;
 using Application.ToDoItem.Query.SearchToDoItem;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;

@@ -12,6 +12,7 @@ namespace Persistence
         Task<int> AddToDoItem(ToDoItem item);
         Task<List<ToDoItemExt>> GetToDoItems(int userId);
         Task<int> UpdateToDoItem(ToDoItem item);
+        Task<BaseToDoItem> GetToDoItem(int itemId);
         Task<int> DeleteToDoItem(int itemId);
         Task<List<ToDoItemExt>> SearchToDoItems(int userId, string searchString, int pageNumber, int pageSize);
     }
