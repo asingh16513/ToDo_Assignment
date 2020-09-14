@@ -6,6 +6,9 @@ using System.Text;
 
 namespace ToDoService.Helpers
 {
+    /// <summary>
+    /// Class to manager JWT options
+    /// </summary>
     public class ConfigureJwtBearerOptions : IPostConfigureOptions<JwtBearerOptions>
     {
         private readonly IOptions<ApplicationSetting> _applicationSetting;
@@ -15,6 +18,11 @@ namespace ToDoService.Helpers
             _applicationSetting = applicationSetting ?? throw new System.ArgumentNullException(nameof(applicationSetting));
         }
 
+        /// <summary>
+        /// Configure JWT 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="options"></param>
         public void PostConfigure(string name, JwtBearerOptions options)
         {
             var applicationSetting = _applicationSetting.Value;

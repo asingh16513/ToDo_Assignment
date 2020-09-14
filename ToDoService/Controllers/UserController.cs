@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace ToDoService.Controllers
 {
+    /// <summary>
+    /// User controller
+    /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
     public class UserController : BaseController
     {
+        /// <summary>
+        /// Method to to validate login
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -23,6 +31,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Method to register new user based on user type
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

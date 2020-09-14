@@ -3,9 +3,19 @@ using System.Linq;
 
 namespace Database
 {
+    /// <summary>
+    /// Extension class for paging
+    /// </summary>
     public static class PagingExtensions
     {
-        //used by LINQ to SQL
+        /// <summary>
+        /// Method to get results by pagesize and pagenumber
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public static IQueryable<TSource> DoPaging<TSource>(this IQueryable<TSource> source, int pageNumber, int pageSize)
         {
             return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);

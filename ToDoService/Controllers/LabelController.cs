@@ -10,11 +10,20 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
+
 namespace ToDoService.Controllers
 {
+    /// <summary>
+    /// Lable controller for crud operations.
+    /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
     public class LabelController : BaseController
     {
+        /// <summary>
+        /// Get all labels
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -25,6 +34,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        /// <summary>
+        /// Add label
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,6 +49,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Get label by label id
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -45,6 +64,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        /// <summary>
+        /// Delete label by id
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,6 +79,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        /// <summary>
+        /// assign label to todoitems
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -65,6 +94,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// assign label to todolists
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]

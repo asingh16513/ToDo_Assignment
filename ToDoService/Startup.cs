@@ -1,6 +1,8 @@
 using Application.Helper;
 using Application.Interface;
 using Application.Label.Queries.GetLabels;
+using AutoMapper;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +20,9 @@ using ToDoService.Middleware;
 
 namespace ToDoService
 {
+    /// <summary>
+    /// startup class 
+    /// </summary>
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -31,6 +36,7 @@ namespace ToDoService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            //services.AddAutoMapper(typeof(AutoMappingHelper));
             services.AddApiVersioning(x =>
             {
                 x.DefaultApiVersion = new ApiVersion(1, 0);

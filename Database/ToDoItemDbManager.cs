@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace Database
 {
+    /// <summary>
+    /// Class to manage DB operations for ToDoItem
+    /// </summary>
     public class ToDoItemDbManager : IToDoItemDbManager
     {
+        /// <summary>
+        /// Method to add new todoitem
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<int> AddToDoItem(ToDoItem item)
         {
             using (var context = new ToDoServiceDBContext())
@@ -19,6 +27,11 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to get all todoitems by user id. 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<List<ToDoItemExt>> GetToDoItems(int userId)
         {
             using (var context = new ToDoServiceDBContext())
@@ -37,6 +50,14 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to get all todoitems based on search criteria and pagesize
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="searchString"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public async Task<List<ToDoItemExt>> SearchToDoItems(int userId, string searchString, int pageNumber, int pageSize)
         {
             using (var context = new ToDoServiceDBContext())
@@ -62,7 +83,11 @@ namespace Database
             }
         }
 
-
+        /// <summary>
+        /// Method to update todoitem
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<int> UpdateToDoItem(ToDoItem item)
         {
             using (var context = new ToDoServiceDBContext())
@@ -73,6 +98,11 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to delete todoitem by id
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         public async Task<int> DeleteToDoItem(int itemId)
         {
             using (var context = new ToDoServiceDBContext())

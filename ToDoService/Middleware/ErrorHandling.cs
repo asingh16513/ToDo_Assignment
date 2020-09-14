@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ToDoService.API.Middleware
 {
+    /// <summary>
+    /// Middleware to manage error handling
+    /// </summary>
     public class ErrorHandling
     {
         private readonly RequestDelegate _next;

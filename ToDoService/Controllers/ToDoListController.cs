@@ -11,9 +11,17 @@ using System.Threading.Tasks;
 
 namespace ToDoService.Controllers
 {
+    /// <summary>
+    /// Controller for CRUD operations for todolist
+    /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
     public class ToDoListController : BaseController
     {
+        /// <summary>
+        /// Mehtod to add new todolist
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -24,6 +32,12 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Method to update todolist by id
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,6 +49,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Method to delete todolist by id
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -45,6 +64,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Method to get collection of todolists
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,6 +79,11 @@ namespace ToDoService.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Method to get collection of todolist based on search criteria and pagesize
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]

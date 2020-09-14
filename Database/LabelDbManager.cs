@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace Database
 {
+    /// <summary>
+    /// Class to manage DB operation for Labels
+    /// </summary>
     public class LabelDbManager : ILabelDBManager
     {
+        /// <summary>
+        /// Method to add label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public async Task<int> AddLabel(Domain.Models.Label label)
         {
             using (var context = new ToDoServiceDBContext())
@@ -19,6 +27,11 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to delete label by id.
+        /// </summary>
+        /// <param name="labelId"></param>
+        /// <returns></returns>
         public async Task<int> DeleteLabelById(int labelId)
         {
             using (var context = new ToDoServiceDBContext())
@@ -29,6 +42,11 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to get label by id
+        /// </summary>
+        /// <param name="labelId"></param>
+        /// <returns></returns>
         public async Task<Label> GetLabelById(int labelId)
         {
             using (var context = new ToDoServiceDBContext())
@@ -38,6 +56,10 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to get colllection of labels
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Label>> GetLabels()
         {
             using (var context = new ToDoServiceDBContext())
@@ -47,6 +69,12 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to assign label to todoitem
+        /// </summary>
+        /// <param name="labelId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         public async Task<int> AssignLabelToItem(int labelId, int[] itemId)
         {
             using (var context = new ToDoServiceDBContext())
@@ -63,6 +91,12 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to assign label to todolist
+        /// </summary>
+        /// <param name="labelId"></param>
+        /// <param name="listId"></param>
+        /// <returns></returns>
         public async Task<int> AssignLabelToList(int labelId, int[] listId)
         {
             using (var context = new ToDoServiceDBContext())

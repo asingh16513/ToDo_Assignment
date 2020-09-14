@@ -5,8 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ToDoService.Helpers
 {
+    /// <summary>
+    /// Method to configure appsettings 
+    /// </summary>
     public static class ConfigurationManager
     {
+        /// <summary>
+        /// Get and configure app settings
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         public static void LoadConfigurationSettings(IServiceCollection services, IConfiguration configuration)
         {
             /*

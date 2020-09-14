@@ -5,6 +5,9 @@ using System.IO;
 
 namespace Database
 {
+    /// <summary>
+    /// Db context class which interacts with database to perform operations.
+    /// </summary>
     public class ToDoServiceDBContext : DbContext
     {
         public ToDoServiceDBContext(DbContextOptions<ToDoServiceDBContext> options) : base(options)

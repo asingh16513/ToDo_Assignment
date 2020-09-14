@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace Database
 {
+    /// <summary>
+    /// Class to manage DB operations for Todolist
+    /// </summary>
     public class ToDoListDbManager : IToDoListDbManager
     {
+        /// <summary>
+        /// Method to add new todolist
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<int> AddToDoList(ToDoList item)
         {
             int result = 0;
@@ -20,6 +28,11 @@ namespace Database
             return result;
         }
 
+        /// <summary>
+        /// Method to get collection for todolist by user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<List<ToDoListExt>> GetToDoList(int userId)
         {
             using (var context = new ToDoServiceDBContext())
@@ -59,6 +72,14 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Method to get collection of todolist based on search criteria and pagesize
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="searchString"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public async Task<List<ToDoListExt>> SearchToDoList(int userId, string searchString, int pageNumber, int pageSize)
         {
             List<ToDoListExt> toDoLists = null;
@@ -107,6 +128,11 @@ namespace Database
             }
         }
 
+        /// <summary>
+        /// Mehtod to update todolist by id
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<int> UpdateToDoList(ToDoList item)
         {
             int result = 0;
@@ -118,6 +144,11 @@ namespace Database
             return result;
         }
 
+        /// <summary>
+        /// Method to delete todolist by id
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         public async Task<int> DeleteToDoList(int itemId)
         {
             using (var context = new ToDoServiceDBContext())
