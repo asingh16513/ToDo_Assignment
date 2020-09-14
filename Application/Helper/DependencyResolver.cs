@@ -4,6 +4,9 @@ using Persistence;
 
 namespace Application.Helper
 {
+    /// <summary>
+    /// CLass to hold dependencies for Db operations
+    /// </summary>
     public class DependencyResolver : NinjectModule
     {
         /// <summary>

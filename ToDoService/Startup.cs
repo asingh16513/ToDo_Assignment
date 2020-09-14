@@ -36,7 +36,7 @@ namespace ToDoService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            //services.AddAutoMapper(typeof(AutoMappingHelper));
+
             services.AddApiVersioning(x =>
             {
                 x.DefaultApiVersion = new ApiVersion(1, 0);

@@ -10,6 +10,9 @@ using System.Text;
 
 namespace Application.Helper
 {
+    /// <summary>
+    /// Class to manage user authentication and generate jwt token
+    /// </summary>
     public class UserManager : IUserManager
     {
         private readonly IHttpContextAccessor _accessor;

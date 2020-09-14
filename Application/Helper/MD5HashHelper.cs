@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Application.Helper
 {
+    /// <summary>
+    /// Class used to hash passowrd 
+    /// </summary>
     public class MD5HashHelper : IMD5Hash
     {
         public string GetMD5Hash(string text)

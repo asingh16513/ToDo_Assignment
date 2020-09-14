@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
+    /// <summary>
+    /// Interface for db operations for Label
+    /// </summary>
     public interface ILabelDBManager
     {
         Task<int> AddLabel(Domain.Models.Label label);

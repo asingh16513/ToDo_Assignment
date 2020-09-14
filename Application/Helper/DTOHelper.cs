@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Application.Helper
 {
+    /// <summary>
+    /// Class to hold methods for converting dto's and vice-versa
+    /// </summary>
     public class DTOHelper
     {
         public Domain.Models.ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo)

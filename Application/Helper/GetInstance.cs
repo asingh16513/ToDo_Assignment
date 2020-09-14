@@ -2,6 +2,9 @@
 
 namespace Application.Helper
 {
+    /// <summary>
+    /// Class to get instance to do db operations
+    /// </summary>
     public class GetInstance
     {
         public static readonly IKernel Kernel;

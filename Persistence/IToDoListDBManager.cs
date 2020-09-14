@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
+    /// <summary>
+    /// Interface for db operations for Todolist
+    /// </summary>
     public interface IToDoListDbManager
     {
         Task<int> AddToDoList(ToDoList item);
