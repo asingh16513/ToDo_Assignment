@@ -1,5 +1,4 @@
-﻿using Application.Helper;
-using Application.Interface;
+﻿using Application.Interface;
 using Application.ToDoList.Command.UpdateCommand;
 using MediatR;
 using Persistence;
@@ -11,18 +10,21 @@ namespace Application.ToDoItem.Command.UpdateCommand
 {
     public class UpdateToDoListCommandHandler : IRequestHandler<UpdateToDoListCommand, int>
     {
+        private readonly IDTO _dtoMapper;
         private readonly IUserManager _userAccessor;
-        public UpdateToDoListCommandHandler(IUserManager userAccessor)
+        private readonly IInstanceDB _instanceDB;
+        public UpdateToDoListCommandHandler(IUserManager userAccessor, IDTO dtoMapper, IInstanceDB instanceDB)
         {
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
+            _dtoMapper = dtoMapper;
+            _instanceDB = instanceDB;
         }
         public async Task<int> Handle(UpdateToDoListCommand request, CancellationToken cancellationToken)
         {
-            DTOHelper helper = new DTOHelper();
             int userId = _userAccessor.GetUserId();
             request.ToDoList.UserId = userId;
-            Domain.Models.ToDoList list = helper.MapListDTOToUpdateEntity(request.ToDoList);
-            var db = GetInstance.Get<IToDoListDbManager>();
+            Domain.Models.ToDoList list = _dtoMapper.MapListDTOToUpdateEntity(request.ToDoList);
+            var db = _instanceDB.Get<IToDoListDbManager>();
             return await db.UpdateToDoList(list);
         }
     }

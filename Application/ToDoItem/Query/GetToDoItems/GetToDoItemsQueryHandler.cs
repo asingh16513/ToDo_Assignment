@@ -12,13 +12,15 @@ namespace Application.ToDoItem.Query.GetToDoItems
     public class GetToDoItemsQueryHandler : IRequestHandler<EmptyQuery<List<Domain.Models.ToDoItemExt>>, List<Domain.Models.ToDoItemExt>>
     {
         private readonly IUserManager _userAccessor;
-        public GetToDoItemsQueryHandler(IUserManager userAccessor)
+        private readonly IInstanceDB _instanceDB;
+        public GetToDoItemsQueryHandler(IUserManager userAccessor, IInstanceDB instanceDB)
         {
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
+            _instanceDB = instanceDB;
         }
         public async Task<List<Domain.Models.ToDoItemExt>> Handle(EmptyQuery<List<Domain.Models.ToDoItemExt>> request, CancellationToken cancellationToken)
         {
-            var db = GetInstance.Get<IToDoItemDbManager>();
+            var db = _instanceDB.Get<IToDoItemDbManager>();
             return await db.GetToDoItems(_userAccessor.GetUserId());
         }
     }

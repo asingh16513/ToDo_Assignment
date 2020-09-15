@@ -144,6 +144,40 @@ namespace Database
             return result;
         }
 
+        public async Task<BaseToDoList> GetToDoListById(int itemId)
+        {
+            using (var context = new ToDoServiceDBContext())
+            {
+                BaseToDoList baseItem = (from item in context.ToDoLists
+                                         join label in context.Labels
+                                         on item.LabelId equals label.Id
+                                         where item.Id == itemId
+                                         select new BaseToDoList
+                                         {
+                                             Id = item.Id,
+                                             Name = item.Name,
+                                         }).FirstOrDefault();
+
+                if (baseItem != null)
+                {
+                    baseItem.TodoItems = new List<BaseToDoItem>();
+                    var db_item = await (from to_do_item in context.ToDoItems
+                                         join label in context.Labels
+                                         on to_do_item.LabelId equals label.Id
+                                         where to_do_item.ToDoListId != null && to_do_item.ToDoListId.Value == baseItem.Id
+                                         select new BaseToDoItem
+                                         {
+                                             Id = to_do_item.Id,
+                                             Name = to_do_item.Name,
+                                         }).ToListAsync();
+
+                    baseItem.TodoItems.AddRange(db_item);
+                }
+                return baseItem;
+            }
+        }
+
+
         /// <summary>
         /// Method to delete todolist by id
         /// </summary>
@@ -158,5 +192,6 @@ namespace Database
                 return await context.SaveChangesAsync();
             }
         }
+
     }
 }

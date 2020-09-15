@@ -1,5 +1,4 @@
-﻿using Application.Helper;
-using Application.Interface;
+﻿using Application.Interface;
 using Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -16,17 +15,19 @@ namespace Application.User.Command.AuthenticateUser
         private readonly IOptions<ApplicationSetting> _applicationSettingAccessor;
         private readonly IUserManager _userAccessor;
         private readonly IMD5Hash _hashHelper;
-        public AuthenticateUserCommandHandler(IOptions<ApplicationSetting> applicationSettingAccessor, IUserManager userAccessor, IMD5Hash hashHelper)
+        private readonly IInstanceDB _instanceDB;
+        public AuthenticateUserCommandHandler(IInstanceDB instanceDB, IOptions<ApplicationSetting> applicationSettingAccessor, IUserManager userAccessor, IMD5Hash hashHelper)
         {
             _applicationSettingAccessor = applicationSettingAccessor;
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
             _hashHelper = hashHelper;
+            _instanceDB = instanceDB;
         }
 
         public async Task<UserAuthResult> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
         {
             UserAuthResult userAuthResult = null;
-            var db = GetInstance.Get<IUserDbManager>();
+            var db = _instanceDB.Get<IUserDbManager>();
             var base64EncodedPwd = Convert.FromBase64String(request.Password);
             var passWord = Encoding.UTF8.GetString(base64EncodedPwd);
             passWord = _hashHelper.GetMD5Hash(passWord);

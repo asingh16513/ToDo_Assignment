@@ -1,6 +1,7 @@
 ﻿using Application.User.Command.AuthenticateUser;
 using Application.User.Command.RegisterUser;
 using Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,11 @@ namespace ToDoService.Controllers
     [Route("api/{v:apiVersion}/[controller]")]
     public class UserController : BaseController
     {
+        private readonly IMediator _mediator;
+        public UserController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         /// <summary>
         /// Method to to validate login
         /// </summary>
@@ -28,7 +34,7 @@ namespace ToDoService.Controllers
         [Route("Login")]
         public async Task<ActionResult> Authenticate([FromBody]AuthenticateUserCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -44,7 +50,7 @@ namespace ToDoService.Controllers
         [Route("RegisterUser")]
         public async Task<ActionResult> RegisterUser([FromBody]RegisterUserCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
     }
 }

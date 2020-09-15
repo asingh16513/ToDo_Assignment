@@ -77,7 +77,16 @@ namespace ToDoService.Middleware
             response.Body.Seek(0, SeekOrigin.Begin);
             string text = await new StreamReader(response.Body).ReadToEndAsync();
             response.Body.Seek(0, SeekOrigin.Begin);
-            return $"  Logging Response {response.Headers} -- {response.StatusCode} -- {text}";
+            string allkeypair = "";
+
+            IHeaderDictionary headers = response.Headers;
+
+            foreach (var headerValuePair in headers)
+            {
+                allkeypair += "\n" + headerValuePair.Key + ":" + headerValuePair.Value;
+
+            }
+            return $"  Logging Response {allkeypair} -- {response.StatusCode} -- {text}";
         }
     }
 }

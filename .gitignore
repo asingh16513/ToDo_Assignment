@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/ToDoService/Logs
+/ToDoServiceTest
+/TodoService.Test

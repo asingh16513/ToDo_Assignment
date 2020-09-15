@@ -1,8 +1,6 @@
-﻿using Application.Helper;
-using Application.Interface;
+﻿using Application.Interface;
 using MediatR;
 using Persistence;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,17 +8,25 @@ namespace Application.ToDoItem.Command.PatchUpdateToDoItem
 {
     public class UpdatePatchToDoItemCommandHandler : IRequestHandler<UpdatePatchToDoItemCommand, int>
     {
-        private readonly IUserManager _userAccessor;
-        public UpdatePatchToDoItemCommandHandler(IUserManager userAccessor)
+        private readonly IPatchToDo _patchToDo;
+        private readonly IDTO _dtoMapper;
+        private readonly IInstanceDB _instanceDB;
+
+        public UpdatePatchToDoItemCommandHandler(IPatchToDo patchToDo, IDTO dtoMapper, IInstanceDB instanceDB)
         {
-            _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
+            _patchToDo = patchToDo;
+            _dtoMapper = dtoMapper;
+            _instanceDB = instanceDB;
         }
         public async Task<int> Handle(UpdatePatchToDoItemCommand request, CancellationToken cancellationToken)
         {
-            DTOHelper helper = new DTOHelper();
-            request.ToDoItem.UserId = _userAccessor.GetUserId(); ;
-            var db = GetInstance.Get<IToDoItemDbManager>();
-            Domain.Models.ToDoItem item = helper.MapItemDTOToUpdateEntity(request.ToDoItem);
+            var db = _instanceDB.Get<IToDoItemDbManager>();
+            Domain.Models.ToDoItem item = _dtoMapper.MapItemDTOToUpdateEntity(await db.GetToDoItem(request.ItemId));
+            var patch = _patchToDo.ItemToCommand(item);
+            if (item != null)
+            {
+                request.JsonPatchDocument.ApplyTo(patch);
+            }
             return await db.UpdateToDoItem(item);
         }
     }

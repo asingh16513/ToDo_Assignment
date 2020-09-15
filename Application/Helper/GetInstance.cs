@@ -1,15 +1,16 @@
-﻿using Ninject;
+﻿using Application.Interface;
+using Ninject;
 
 namespace Application.Helper
 {
     /// <summary>
     /// Class to get instance to do db operations
     /// </summary>
-    public class GetInstance
+    public class GetInstance : IInstanceDB
     {
-        public static readonly IKernel Kernel;
+        public readonly IKernel Kernel;
 
-        static GetInstance()
+        public GetInstance()
         {
             if (Kernel == null) Kernel = new StandardKernel(new DependencyResolver());
         }
@@ -19,7 +20,7 @@ namespace Application.Helper
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T Get<T>()
+        public T Get<T>()
         {
             return Kernel.Get<T>();
         }

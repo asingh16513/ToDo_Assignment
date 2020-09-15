@@ -1,5 +1,4 @@
-﻿using Application.Helper;
-using Application.Interface;
+﻿using Application.Interface;
 using Domain.Models;
 using MediatR;
 using Persistence;
@@ -12,14 +11,16 @@ namespace Application.ToDoItem.Query.SearchToDoItem
 {
     public class SearchToDoItemQueryHandler : IRequestHandler<SearchToDoItemQuery, List<ToDoItemExt>>
     {
+        private readonly IInstanceDB _instanceDB;
         private readonly IUserManager _userAccessor;
-        public SearchToDoItemQueryHandler(IUserManager userAccessor)
+        public SearchToDoItemQueryHandler(IUserManager userAccessor, IInstanceDB instanceDB)
         {
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
+            _instanceDB = instanceDB;
         }
         public async Task<List<ToDoItemExt>> Handle(SearchToDoItemQuery request, CancellationToken cancellationToken)
         {
-            var db = GetInstance.Get<IToDoItemDbManager>();
+            var db = _instanceDB.Get<IToDoItemDbManager>();
             return await db.SearchToDoItems(_userAccessor.GetUserId(), request.SearchFilter.SearchString, request.SearchFilter.PageNumber,
                 request.SearchFilter.PageSize);
         }

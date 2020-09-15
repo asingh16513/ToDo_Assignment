@@ -1,4 +1,4 @@
-﻿using Application.Helper;
+﻿using Application.Interface;
 using MediatR;
 using Persistence;
 using System.Threading;
@@ -8,9 +8,14 @@ namespace Application.ToDoItem.Query.DeleteToDoItemQuery
 {
     public class DeleteToDoItemQueryHandler : IRequestHandler<DeleteToDoItemQuery, int>
     {
+        private readonly IInstanceDB _instanceDB;
+        public DeleteToDoItemQueryHandler(IInstanceDB instanceDB)
+        {
+            _instanceDB = instanceDB;
+        }
         public async Task<int> Handle(DeleteToDoItemQuery request, CancellationToken cancellationToken)
         {
-            var db = GetInstance.Get<IToDoItemDbManager>();
+            var db = _instanceDB.Get<IToDoItemDbManager>();
             return await db.DeleteToDoItem(request.ItemId);
         }
     }

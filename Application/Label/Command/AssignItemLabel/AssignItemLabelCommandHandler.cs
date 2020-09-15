@@ -1,4 +1,4 @@
-﻿using Application.Helper;
+﻿using Application.Interface;
 using MediatR;
 using Persistence;
 using System.Threading;
@@ -8,9 +8,15 @@ namespace Application.Label.Command.AssignItemLabel
 {
     public class AssignItemLabelCommandHandler : IRequestHandler<AssignItemLabelCommand, int>
     {
+        private readonly IInstanceDB _instanceDB;
+
+        public AssignItemLabelCommandHandler(IInstanceDB instanceDB)
+        {
+            _instanceDB = instanceDB;
+        }
         public async Task<int> Handle(AssignItemLabelCommand request, CancellationToken cancellationToken)
         {
-            var db = GetInstance.Get<ILabelDBManager>();
+            var db = _instanceDB.Get<ILabelDBManager>();
             return await db.AssignLabelToItem(request.LabelId, request.ItemId);
         }
     }

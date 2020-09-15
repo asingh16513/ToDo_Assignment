@@ -1,9 +1,13 @@
 ﻿using Application.Helper;
+using Application.Interface;
 using Application.ToDoItem.Command.AddToDoItem;
+using Application.ToDoItem.Command.PatchUpdateToDoItem;
 using Application.ToDoItem.Command.UpdateCommand;
 using Application.ToDoItem.Query.DeleteToDoItemQuery;
 using Application.ToDoItem.Query.SearchToDoItem;
+using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
@@ -17,6 +21,14 @@ namespace ToDoService.Controllers
     [Route("api/{v:apiVersion}/[controller]")]
     public class ToDoItemsController : BaseController
     {
+        private readonly IMediator _mediator;
+        private IPatchToDo _patchToDo;
+        public ToDoItemsController(IPatchToDo patchToDo, IMediator mediator)
+        {
+            _patchToDo = patchToDo;
+            _mediator = mediator;
+        }
+
         /// <summary>
         /// Method to add new todoitem
         /// </summary>
@@ -29,7 +41,7 @@ namespace ToDoService.Controllers
         [Route("AddToDoItem")]
         public async Task<ActionResult> AddToDoItem([FromBody]AddToDoItemCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -46,8 +58,27 @@ namespace ToDoService.Controllers
         public async Task<ActionResult> UpdateToDoItem(int itemId, [FromBody]UpdateToDoItemCommand command)
         {
             command.ToDoItem.Id = itemId;
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
+
+        /// <summary>
+        /// Method to update todoitem
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [Route("PatchToDoItem")]
+        public async Task<ActionResult> PatchToDoItem(int itemId, [FromBody]JsonPatchDocument<UpdateToDoItemCommand> patchDocument)
+        {
+
+            UpdatePatchToDoItemCommand command = _patchToDo.CommandToPatch(itemId, patchDocument);
+            return Ok(await _mediator.Send(command));
+        }
+
 
         /// <summary>
         /// Method to delete todoitem by id
@@ -61,7 +92,7 @@ namespace ToDoService.Controllers
         [Route("DeleteToDoItem")]
         public async Task<ActionResult> DeleteToDoItem([FromQuery]DeleteToDoItemQuery command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -76,7 +107,7 @@ namespace ToDoService.Controllers
         [Route("GetToDoItems")]
         public async Task<ActionResult> GetToDoItems([FromQuery]EmptyQuery<List<Domain.Models.ToDoItemExt>> command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -91,7 +122,7 @@ namespace ToDoService.Controllers
         [Route("SearchToDoItem")]
         public async Task<ActionResult> SearchToDoItems([FromQuery]SearchToDoItemQuery query)
         {
-            return Ok(await Mediator.Send(query));
+            return Ok(await _mediator.Send(query));
         }
     }
 }

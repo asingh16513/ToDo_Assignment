@@ -1,9 +1,13 @@
 ﻿using Application.Helper;
+using Application.Interface;
 using Application.ToDoList.Command.AddToDoList;
 using Application.ToDoList.Command.UpdateCommand;
+using Application.ToDoList.PatchUpdateToDoList;
 using Application.ToDoList.Query.DeleteToDoListQuery;
 using Application.ToDoList.Query.SearchToDoList;
+using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
@@ -17,6 +21,14 @@ namespace ToDoService.Controllers
     [Route("api/{v:apiVersion}/[controller]")]
     public class ToDoListController : BaseController
     {
+        private readonly IMediator _mediator;
+        private readonly IPatchToDo _patchToDo;
+        public ToDoListController(IPatchToDo patchToDo, IMediator mediator)
+        {
+            _patchToDo = patchToDo;
+            _mediator = mediator;
+        }
+
         /// <summary>
         /// Mehtod to add new todolist
         /// </summary>
@@ -29,7 +41,7 @@ namespace ToDoService.Controllers
         [Route("AddToDoList")]
         public async Task<ActionResult> AddToDoList([FromBody]AddToDoListCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -46,7 +58,19 @@ namespace ToDoService.Controllers
         public async Task<ActionResult> UpdateToDoList(int itemId, [FromBody]UpdateToDoListCommand command)
         {
             command.ToDoList.Id = itemId;
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [Route("PatchToDoList")]
+        public async Task<ActionResult> PatchToDoList(int itemId, [FromBody]JsonPatchDocument<UpdateToDoListCommand> patchDocument)
+        {
+
+            UpdatePatchToDoListCommand command = _patchToDo.CommandToPatch(itemId, patchDocument);
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -61,7 +85,7 @@ namespace ToDoService.Controllers
         [Route("DeleteToDoList")]
         public async Task<ActionResult> DeleteToDoList([FromQuery]DeleteToDoListQuery command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -76,7 +100,7 @@ namespace ToDoService.Controllers
         [Route("GetToDoList")]
         public async Task<ActionResult> GetToDoList([FromQuery]EmptyQuery<List<Domain.Models.ToDoListExt>> command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -91,7 +115,7 @@ namespace ToDoService.Controllers
         [Route("SearchToDoList")]
         public async Task<ActionResult> SearchToDoItems([FromQuery]SearchToDoListQuery query)
         {
-            return Ok(await Mediator.Send(query));
+            return Ok(await _mediator.Send(query));
         }
     }
 }

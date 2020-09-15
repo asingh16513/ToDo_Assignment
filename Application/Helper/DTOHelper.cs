@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Interface;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace Application.Helper
     /// <summary>
     /// Class to hold methods for converting dto's and vice-versa
     /// </summary>
-    public class DTOHelper
+    public class DTOHelper : IDTO
     {
         public Domain.Models.ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo)
         {
@@ -36,6 +37,7 @@ namespace Application.Helper
             };
             return item;
         }
+
 
         public Domain.Models.ToDoList MapListDTOToAddEntity(BaseToDoList baseToDo)
         {

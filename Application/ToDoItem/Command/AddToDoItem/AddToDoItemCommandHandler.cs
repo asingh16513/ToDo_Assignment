@@ -1,5 +1,4 @@
-﻿using Application.Helper;
-using Application.Interface;
+﻿using Application.Interface;
 using MediatR;
 using Persistence;
 using System;
@@ -11,17 +10,20 @@ namespace Application.ToDoItem.Command.AddToDoItem
     public class AddToDoItemCommandHandler : IRequestHandler<AddToDoItemCommand, int>
     {
         private readonly IUserManager _userAccessor;
-        public AddToDoItemCommandHandler(IUserManager userAccessor)
+        private readonly IInstanceDB _instanceDB;
+        private readonly IDTO _dTO;
+        public AddToDoItemCommandHandler(IUserManager userAccessor, IDTO dTO, IInstanceDB instanceDB)
         {
             _userAccessor = userAccessor ?? throw new ArgumentNullException(nameof(userAccessor));
+            _dTO = dTO;
+            _instanceDB = instanceDB;
         }
         public async Task<int> Handle(AddToDoItemCommand request, CancellationToken cancellationToken)
         {
-            DTOHelper helper = new DTOHelper();
             int userId = _userAccessor.GetUserId();
             request.ToDoItem.UserId = userId;
-            Domain.Models.ToDoItem item = helper.MapItemDTOToAddEntity(request.ToDoItem);
-            var db = GetInstance.Get<IToDoItemDbManager>();
+            Domain.Models.ToDoItem item = _dTO.MapItemDTOToAddEntity(request.ToDoItem);
+            var db = _instanceDB.Get<IToDoItemDbManager>();
             return await db.AddToDoItem(item);
         }
     }
