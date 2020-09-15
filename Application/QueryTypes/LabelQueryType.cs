@@ -2,9 +2,9 @@
 
 namespace Application.QueryTypes
 {
-    public class LabelQueryType : ObjectType<AssessmentQuery>
+    public class LabelQueryType : ObjectType<LabelQueries>
     {
-        protected override void Configure(IObjectTypeDescriptor<AssessmentQuery> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<LabelQueries> descriptor)
         {
             base.Configure(descriptor);
 

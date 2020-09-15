@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.IO;
 using ToDoService.API.Middleware;
 using ToDoService.Helpers;
 using ToDoService.Middleware;
@@ -44,7 +45,7 @@ namespace ToDoService
                 .AddServices(s)
                 .AddType<LabelType>()
                 .AddQueryType<LabelQueryType>()
-                .Create());
+                .Create()); 
             services.AddApiVersioning(x =>
             {
                 x.DefaultApiVersion = new ApiVersion(1, 0);
@@ -116,8 +117,7 @@ namespace ToDoService
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
-
+            } 
             app.UseGraphQL();
             app.UsePlayground();
             app.UseHttpsRedirection();

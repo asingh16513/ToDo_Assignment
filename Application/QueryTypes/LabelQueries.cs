@@ -8,7 +8,7 @@ namespace Application.QueryTypes
 {
     public class LabelQueries
     {
-        private ILabelDBManager _labelservice;
+        private readonly ILabelDBManager _labelservice;
         public LabelQueries(ILabelDBManager labelDBManager)
         {
             _labelservice = labelDBManager;
