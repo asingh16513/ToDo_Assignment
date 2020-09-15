@@ -9,6 +9,9 @@ using System;
 
 namespace Application.Helper
 {
+    /// <summary>
+    /// Class holds path methods to convert from Jsonpatchdocument to Command
+    /// </summary>
     public class PatchHelper : IPatchToDo
     {
         public UpdatePatchToDoItemCommand CommandToPatch(int id, JsonPatchDocument<UpdateToDoItemCommand> jsonPatchDocument)

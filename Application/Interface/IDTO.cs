@@ -2,6 +2,9 @@
 
 namespace Application.Interface
 {
+    /// <summary>
+    /// Interface used for Mapping
+    /// </summary>
     public interface IDTO
     {
         Domain.Models.ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo);

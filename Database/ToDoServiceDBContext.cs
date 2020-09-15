@@ -10,10 +10,6 @@ namespace Database
     /// </summary>
     public class ToDoServiceDBContext : DbContext
     {
-        public ToDoServiceDBContext(DbContextOptions<ToDoServiceDBContext> options) : base(options)
-        {
-
-        }
 
         public ToDoServiceDBContext()
         {
@@ -27,8 +23,7 @@ namespace Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/appsettings.json").Build();
-            var builder = new DbContextOptionsBuilder<ToDoServiceDBContext>();
-            var connectionString = configuration.GetConnectionString("ToDoServiceDb");
+            string connectionString = configuration.GetConnectionString("ToDoServiceDb");
             optionsBuilder.UseSqlServer(connectionString);
         }
 
