@@ -14,7 +14,7 @@ namespace ToDoService.Controllers
     /// User controller
     /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
-    public class UserController : BaseController
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
         public UserController(IMediator mediator)

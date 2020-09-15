@@ -19,7 +19,7 @@ namespace ToDoService.Controllers
     /// Controller for CRUD operations for todolist
     /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
-    public class ToDoListController : BaseController
+    public class ToDoListController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IPatchToDo _patchToDo;
