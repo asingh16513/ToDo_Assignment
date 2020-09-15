@@ -3,6 +3,9 @@ using HotChocolate.Types;
 
 namespace Domain.GraphQlModels
 {
+    /// <summary>
+    /// Label model for  GraphQL
+    /// </summary>
     public class LabelType : ObjectType<Label>
     {
         protected override void Configure(IObjectTypeDescriptor<Label> label)

@@ -1,8 +1,13 @@
 using Application.Helper;
 using Application.Interface;
+using Application.Label.Command.AddLabel;
 using Application.Label.Queries.GetLabels;
+using Application.Mutation;
 using Application.QueryTypes;
+using Database;
 using Domain.GraphQlModels;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using MediatR;
@@ -16,7 +21,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using System.IO;
+using Persistence;
+using System.Collections.Generic;
+using System.Reflection;
 using ToDoService.API.Middleware;
 using ToDoService.Helpers;
 using ToDoService.Middleware;
@@ -44,38 +51,41 @@ namespace ToDoService
                 .AddGraphQL(s => SchemaBuilder.New()
                 .AddServices(s)
                 .AddType<LabelType>()
-                .AddQueryType<LabelQueryType>()
-                .Create()); 
+                .AddType<ToDoListType>()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
+                .AddAuthorizeDirectiveType()
+                .Create());
             services.AddApiVersioning(x =>
             {
                 x.DefaultApiVersion = new ApiVersion(1, 0);
                 x.AssumeDefaultVersionWhenUnspecified = true;
                 x.ReportApiVersions = true;
             });
-            services.AddMvc(p => p.RespectBrowserAcceptHeader = true).AddJsonOptions(o =>
-                {
-                    o.JsonSerializerOptions.PropertyNamingPolicy = null;
-                    o.JsonSerializerOptions.DictionaryKeyPolicy = null;
-                })
-            .AddXmlSerializerFormatters();
-            services.AddMediatR(typeof(GetLabelListHandler).Assembly);
-
-            services.AddSingleton<IInstanceDB, GetInstance>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IPatchToDo, PatchHelper>();
-            services.AddScoped<IDTO, DTOHelper>();
+           
 
             ConfigurationManager.LoadConfigurationSettings(services, Configuration);
             services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
-            services.AddTransient<IUserManager, UserManager>();
-            services.AddSingleton<IMD5Hash, MD5HashHelper>();
-
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
             })
             .AddJwtBearer();
+
+            services.AddMvc(p => p.RespectBrowserAcceptHeader = true).AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                o.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            })
+           .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LabelValidator>())
+           .AddXmlSerializerFormatters();
+
+            RegisterServices(services);
+            //s//ervices.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            //RegisterValidatorService(services);
 
             services.AddSwaggerGen(s =>
             {
@@ -104,6 +114,30 @@ namespace ToDoService
             });
         }
 
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddMediatR(typeof(GetLabelListHandler).Assembly);
+            services.AddSingleton<ILabelDBManager, LabelDbManager>();
+            services.AddSingleton<IToDoItemDbManager, ToDoItemDbManager>();
+            services.AddSingleton<IToDoListDbManager, ToDoListDbManager>();
+            services.AddSingleton<IUserDbManager, UserDbManager>();
+            services.AddSingleton<IInstanceDB, GetInstance>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IPatchToDo, PatchHelper>();
+            services.AddScoped<IDTO, DTOHelper>();
+            services.AddTransient<IUserManager, UserManager>();
+            services.AddSingleton<IMD5Hash, MD5HashHelper>();
+        }
+
+        private static void RegisterValidatorService(IServiceCollection services)
+        {
+            var assembliesToRegister = new List<Assembly>() { typeof(LabelValidator).Assembly };
+            AssemblyScanner.FindValidatorsInAssemblies(assembliesToRegister).ForEach(pair =>
+            {
+                services.Add(ServiceDescriptor.Transient(pair.InterfaceType, pair.ValidatorType));
+            });
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -117,15 +151,16 @@ namespace ToDoService
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            } 
-            app.UseGraphQL();
-            app.UsePlayground();
+            }
+
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseMiddleware(typeof(ErrorHandling));
             app.UseMiddleware(typeof(RequestLogging));
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseGraphQL();
+            app.UsePlayground();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

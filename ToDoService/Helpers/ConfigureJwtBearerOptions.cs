@@ -33,7 +33,8 @@ namespace ToDoService.Helpers
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(applicationSetting.AuthenticationTokenSecret)),
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                ValidateLifetime = true,
             };
         }
     }

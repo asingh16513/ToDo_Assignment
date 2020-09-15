@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
+    /// <summary>
+    /// Class to information about todoitems
+    /// </summary>
     [Table("ToDoItems")]
     public class ToDoItem : BaseToDoItem
     {

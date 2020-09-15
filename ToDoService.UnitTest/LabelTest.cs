@@ -12,9 +12,14 @@ using ToDoService.Controllers;
 
 namespace ToDoService.UnitTest
 {
+    /// <summary>
+    /// Class to do unit test for Labels
+    /// </summary>
     public class LabelTest
     {
-
+        /// <summary>
+        /// Test to add labels
+        /// </summary>
         [Test]
         public void AddLabelTest()
         {
@@ -30,6 +35,9 @@ namespace ToDoService.UnitTest
             Assert.AreEqual(1, (int)response.Value);
         }
 
+        /// <summary>
+        /// Test to get all labels
+        /// </summary>
         [Test]
         public void GetLabelsTest()
         {
@@ -46,6 +54,9 @@ namespace ToDoService.UnitTest
             Assert.AreEqual(labels.Count, ((List<Label>)response.Value).Count);
         }
 
+        /// <summary>
+        /// Test to get label by id
+        /// </summary>
         [Test]
         public void GetLabelByIdTest()
         {

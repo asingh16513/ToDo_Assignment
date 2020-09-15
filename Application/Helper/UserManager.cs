@@ -51,16 +51,15 @@ namespace Application.Helper
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenHandler.WriteToken(token);
         }
 
         private T FetchClaim<T>(string claimKey)
         {
-            ClaimsIdentity claimsIdentity = GetUser().Identity as ClaimsIdentity;
-            if (claimsIdentity != null && claimsIdentity.Claims != null && claimsIdentity.Claims.Count() > 0)
+            if (GetUser().Identity is ClaimsIdentity claimsIdentity && claimsIdentity.Claims != null && claimsIdentity.Claims.Count() > 0)
                 return (T)Convert.ChangeType(claimsIdentity.Claims.FirstOrDefault(c => c.Type == claimKey).Value, typeof(T));
             else
-                return default(T);
+                return default;
         }
 
         public int GetUserId()
@@ -82,8 +81,7 @@ namespace Application.Helper
         public Guid GetRequestId()
         {
             string requestId = FetchClaim<string>(_requestId);
-            Guid outResult;
-            Guid.TryParse(requestId, out outResult);
+            Guid.TryParse(requestId, out Guid outResult);
             return outResult;
         }
     }

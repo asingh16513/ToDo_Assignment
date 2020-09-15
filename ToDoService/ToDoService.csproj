@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="10.5.2" />
     <PackageReference Include="HotChocolate.AspNetCore.GraphiQL" Version="10.5.2" />
     <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.2" />

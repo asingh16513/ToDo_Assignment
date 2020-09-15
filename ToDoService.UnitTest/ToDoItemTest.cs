@@ -8,16 +8,20 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using ToDoService.Controllers;
 
 namespace ToDoService.UnitTest
 {
+    /// <summary>
+    /// Class used to do unit test for Todoitem
+    /// </summary>
     public class ToDoItemTest
     {
+        /// <summary>
+        /// Test to add todoitem
+        /// </summary>
         [Test]
         public void AddToDoItemTest()
         {
@@ -40,6 +44,9 @@ namespace ToDoService.UnitTest
             Assert.AreEqual(1, (int)response.Value);
         }
 
+        /// <summary>
+        /// Test to get all todoitems
+        /// </summary>
         [Test]
         public void GetToDoItemsTest()
         {
@@ -75,6 +82,9 @@ namespace ToDoService.UnitTest
             Assert.AreEqual("Label 2", items[1].Label);
         }
 
+        /// <summary>
+        /// Test to update todoitem
+        /// </summary>
         [Test]
         public void UpdateToDoItemTest()
         {
@@ -96,14 +106,17 @@ namespace ToDoService.UnitTest
             Assert.AreEqual(1, (int)response.Value);
         }
 
+        /// <summary>
+        /// Test to delete todoitem
+        /// </summary>
         [Test]
         public void DeleteToDoItemTest()
         {
             var mediator = new Mock<IMediator>();
             var patchToDo = new Mock<IPatchToDo>();
             DeleteToDoItemQuery command = new DeleteToDoItemQuery
-            { 
-                ItemId=1
+            {
+                ItemId = 1
             };
             mediator.Setup(e => e.Send(command, new System.Threading.CancellationToken())).Returns(Task.FromResult(1));
             ToDoItemsController controller = new ToDoItemsController(patchToDo.Object, mediator.Object);

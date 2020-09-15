@@ -5,6 +5,7 @@ using Application.Label.Command.AssignLabelToList;
 using Application.Label.Queries.DeleteLabelById;
 using Application.Label.Queries.GetLabelById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace ToDoService.Controllers
     /// Lable controller for crud operations.
     /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
+    [Authorize]
+
     public class LabelController : ControllerBase
     {
         private readonly IMediator _mediator;

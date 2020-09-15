@@ -6,6 +6,7 @@ using Application.ToDoItem.Command.UpdateCommand;
 using Application.ToDoItem.Query.DeleteToDoItemQuery;
 using Application.ToDoItem.Query.SearchToDoItem;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace ToDoService.Controllers
     /// Controller for CRUD for todoitems
     /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
+    [Authorize]
     public class ToDoItemsController : ControllerBase
     {
         private readonly IMediator _mediator;

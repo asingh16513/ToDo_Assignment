@@ -6,6 +6,7 @@ using Application.ToDoList.PatchUpdateToDoList;
 using Application.ToDoList.Query.DeleteToDoListQuery;
 using Application.ToDoList.Query.SearchToDoList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace ToDoService.Controllers
     /// Controller for CRUD operations for todolist
     /// </summary>
     [Route("api/{v:apiVersion}/[controller]")]
+    [Authorize]
     public class ToDoListController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -1,5 +1,8 @@
 ﻿namespace Domain.Models
 {
+    /// <summary>
+    /// DTO for todoitems
+    /// </summary>
     public class ToDoItemExt
     {
         public int Id { get; set; }

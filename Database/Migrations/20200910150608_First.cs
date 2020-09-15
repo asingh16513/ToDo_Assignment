@@ -52,12 +52,6 @@ namespace Database.Migrations
                 {
                     table.PrimaryKey("PK_ToDoLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_list_label_ToDoList",
-                        column: x => x.LabelId,
-                        principalTable: "Labels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetDefault);
-                    table.ForeignKey(
                         name: "FK_user_id_Users",
                         column: x => x.UserId,
                         principalTable: "Users",
@@ -87,12 +81,6 @@ namespace Database.Migrations
                         name: "FK_ToDoItems_ToDoLists_ToDoListId",
                         column: x => x.ToDoListId,
                         principalTable: "ToDoLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetDefault);
-                    table.ForeignKey(
-                        name: "FK_item_label_ToDoList",
-                        column: x => x.LabelId,
-                        principalTable: "Labels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetDefault);
                     table.ForeignKey(

@@ -8,22 +8,26 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using ToDoService.Controllers;
 
 namespace ToDoService.UnitTest
 {
-    class ToDoListTest
+    /// <summary>
+    /// Class to do unit test for todolist
+    /// </summary>
+    public class ToDoListTest
     {
+        /// <summary>
+        /// Test to add todolist
+        /// </summary>
         [Test]
         public void AddToDoListTest()
         {
             var mediator = new Mock<IMediator>();
             var patchToDo = new Mock<IPatchToDo>();
-            var todoItem= new Domain.Models.BaseToDoItem()
+            var todoItem = new Domain.Models.BaseToDoItem()
             {
                 IsComplete = true,
                 LabelId = 1,
@@ -48,11 +52,14 @@ namespace ToDoService.UnitTest
             Assert.AreEqual(1, (int)response.Value);
         }
 
+        /// <summary>
+        /// Test to get collection of todolists
+        /// </summary>
         [Test]
         public void GetToDoListTest()
         {
             var todoItem = new Domain.Models.ToDoItemExt()
-            { 
+            {
                 Id = 2,
                 Name = "Item 1",
                 Label = "Label 1",
@@ -77,13 +84,16 @@ namespace ToDoService.UnitTest
             var response = result.Result as OkObjectResult;
             List<ToDoListExt> items = (List<ToDoListExt>)response.Value;
             Assert.AreEqual(2, items[0].Id);
-            Assert.AreEqual("List 1", items[0].Name); 
+            Assert.AreEqual("List 1", items[0].Name);
 
             Assert.AreEqual(2, items[0].ToDoItems[0].Id);
             Assert.AreEqual("Item 1", items[0].ToDoItems[0].Name);
             Assert.AreEqual("Label 1", items[0].ToDoItems[0].Label);
         }
 
+        /// <summary>
+        /// Test to udpate todolist
+        /// </summary>
         [Test]
         public void UpdateToDoListTest()
         {
@@ -102,7 +112,7 @@ namespace ToDoService.UnitTest
                 {
                     LabelId = 2,
                     Name = "Item 3",
-                    TodoItems=new List<BaseToDoItem>() { todoItem }
+                    TodoItems = new List<BaseToDoItem>() { todoItem }
                 }
             };
             mediator.Setup(e => e.Send(command, new System.Threading.CancellationToken())).Returns(Task.FromResult(1));
@@ -112,8 +122,11 @@ namespace ToDoService.UnitTest
             Assert.AreEqual(1, (int)response.Value);
         }
 
+        /// <summary>
+        /// Test to delete todolist
+        /// </summary>
         [Test]
-        public void DeleteToDoItemTest()
+        public void DeleteToDoListTest()
         {
             var mediator = new Mock<IMediator>();
             var patchToDo = new Mock<IPatchToDo>();

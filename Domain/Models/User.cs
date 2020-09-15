@@ -2,6 +2,9 @@
 
 namespace Domain.Models
 {
+    /// <summary>
+    /// Class to manage user
+    /// </summary>
     public class User : BaseModel
     {
         /// <summary>

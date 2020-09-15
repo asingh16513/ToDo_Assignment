@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.Models
+﻿namespace Domain.Models
 {
+    /// <summary>
+    /// Base model class for all 
+    /// </summary>
     public class BaseModel
     {
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
     }

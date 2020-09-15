@@ -3,6 +3,9 @@ using HotChocolate.Types;
 
 namespace Domain.GraphQlModels
 {
+    /// <summary>
+    /// TodoItem model for GraphQL
+    /// </summary>
     class ToDoItemType : ObjectType<ToDoItemExt>
     {
         protected override void Configure(IObjectTypeDescriptor<ToDoItemExt> item)
