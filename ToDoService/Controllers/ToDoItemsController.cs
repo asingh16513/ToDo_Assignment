@@ -1,10 +1,10 @@
 ﻿using Application.Helper;
 using Application.Interface;
-using Application.ToDoItem.Command.AddToDoItem;
-using Application.ToDoItem.Command.PatchUpdateToDoItem;
-using Application.ToDoItem.Command.UpdateCommand;
-using Application.ToDoItem.Query.DeleteToDoItemQuery;
-using Application.ToDoItem.Query.SearchToDoItem;
+using Application.ToDoItems.Command.AddToDoItem;
+using Application.ToDoItems.Command.PatchUpdateToDoItem;
+using Application.ToDoItems.Command.UpdateCommand;
+using Application.ToDoItems.Query.DeleteToDoItemQuery;
+using Application.ToDoItems.Query.SearchToDoItem;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

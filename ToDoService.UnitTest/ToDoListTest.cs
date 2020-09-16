@@ -1,8 +1,8 @@
 ﻿using Application.Helper;
 using Application.Interface;
-using Application.ToDoList.Command.AddToDoList;
-using Application.ToDoList.Command.UpdateCommand;
-using Application.ToDoList.Query.DeleteToDoListQuery;
+using Application.ToDoLists.Command.AddToDoList;
+using Application.ToDoLists.Command.UpdateCommand;
+using Application.ToDoLists.Query.DeleteToDoListQuery;
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

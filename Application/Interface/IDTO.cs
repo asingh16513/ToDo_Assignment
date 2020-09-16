@@ -7,9 +7,9 @@ namespace Application.Interface
     /// </summary>
     public interface IDTO
     {
-        Domain.Models.ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo);
-        Domain.Models.ToDoItem MapItemDTOToUpdateEntity(BaseToDoItem baseToDo);
-        Domain.Models.ToDoList MapListDTOToAddEntity(BaseToDoList baseToDo);
-        Domain.Models.ToDoList MapListDTOToUpdateEntity(BaseToDoList baseToDo);
+        ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo);
+        ToDoItem MapItemDTOToUpdateEntity(BaseToDoItem baseToDo);
+        ToDoList MapListDTOToAddEntity(BaseToDoList baseToDo);
+        ToDoList MapListDTOToUpdateEntity(BaseToDoList baseToDo);
     }
 }

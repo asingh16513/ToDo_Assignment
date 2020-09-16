@@ -1,10 +1,10 @@
 ﻿using Application.Helper;
 using Application.Interface;
-using Application.ToDoList.Command.AddToDoList;
-using Application.ToDoList.Command.UpdateCommand;
-using Application.ToDoList.PatchUpdateToDoList;
-using Application.ToDoList.Query.DeleteToDoListQuery;
-using Application.ToDoList.Query.SearchToDoList;
+using Application.ToDoLists.Command.AddToDoList;
+using Application.ToDoLists.Command.UpdateCommand;
+using Application.ToDoLists.PatchUpdateToDoList;
+using Application.ToDoLists.Query.DeleteToDoListQuery;
+using Application.ToDoLists.Query.SearchToDoList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

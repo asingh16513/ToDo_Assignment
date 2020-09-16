@@ -10,9 +10,9 @@ namespace Application.Helper
     /// </summary>
     public class DTOHelper : IDTO
     {
-        public Domain.Models.ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo)
+        public ToDoItem MapItemDTOToAddEntity(BaseToDoItem baseToDo)
         {
-            Domain.Models.ToDoItem item = new Domain.Models.ToDoItem()
+            ToDoItem item = new ToDoItem()
             {
                 CreatedDate = DateTime.Now,
                 LabelId = baseToDo.LabelId,
@@ -23,9 +23,9 @@ namespace Application.Helper
             };
             return item;
         }
-        public Domain.Models.ToDoItem MapItemDTOToUpdateEntity(BaseToDoItem baseToDo)
+        public ToDoItem MapItemDTOToUpdateEntity(BaseToDoItem baseToDo)
         {
-            Domain.Models.ToDoItem item = new Domain.Models.ToDoItem()
+            ToDoItem item = new ToDoItem()
             {
                 Id = baseToDo.Id,
                 UpdatedDate = DateTime.Now,
@@ -39,9 +39,9 @@ namespace Application.Helper
         }
 
 
-        public Domain.Models.ToDoList MapListDTOToAddEntity(BaseToDoList baseToDo)
+        public ToDoList MapListDTOToAddEntity(BaseToDoList baseToDo)
         {
-            Domain.Models.ToDoList itemList = new Domain.Models.ToDoList()
+            ToDoList itemList = new ToDoList()
             {
                 CreatedDate = DateTime.Now,
                 LabelId = baseToDo.LabelId,
@@ -51,7 +51,7 @@ namespace Application.Helper
             };
             if (baseToDo.TodoItems != null && baseToDo.TodoItems.Count > 0)
             {
-                itemList.TodoItems = new List<Domain.Models.ToDoItem>();
+                itemList.TodoItems = new List<ToDoItem>();
                 foreach (var item in baseToDo.TodoItems)
                 {
                     itemList.TodoItems.Add(MapItemDTOToAddEntity(item));
@@ -60,9 +60,9 @@ namespace Application.Helper
             return itemList;
         }
 
-        public Domain.Models.ToDoList MapListDTOToUpdateEntity(BaseToDoList baseToDo)
+        public ToDoList MapListDTOToUpdateEntity(BaseToDoList baseToDo)
         {
-            Domain.Models.ToDoList itemList = new Domain.Models.ToDoList()
+            ToDoList itemList = new ToDoList()
             {
                 Id = baseToDo.Id,
                 UpdatedDate = DateTime.Now,
@@ -72,7 +72,7 @@ namespace Application.Helper
             };
             if (baseToDo.TodoItems != null && baseToDo.TodoItems.Count > 0)
             {
-                itemList.TodoItems = new List<Domain.Models.ToDoItem>();
+                itemList.TodoItems = new List<ToDoItem>();
                 foreach (var item in baseToDo.TodoItems)
                 {
                     itemList.TodoItems.Add(MapItemDTOToUpdateEntity(item));

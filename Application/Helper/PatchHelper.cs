@@ -1,8 +1,8 @@
 ﻿using Application.Interface;
-using Application.ToDoItem.Command.PatchUpdateToDoItem;
-using Application.ToDoItem.Command.UpdateCommand;
-using Application.ToDoList.Command.UpdateCommand;
-using Application.ToDoList.PatchUpdateToDoList;
+using Application.ToDoItems.Command.PatchUpdateToDoItem;
+using Application.ToDoItems.Command.UpdateCommand;
+using Application.ToDoLists.Command.UpdateCommand;
+using Application.ToDoLists.PatchUpdateToDoList;
 using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using System;
@@ -16,35 +16,43 @@ namespace Application.Helper
     {
         public UpdatePatchToDoItemCommand CommandToPatch(int id, JsonPatchDocument<UpdateToDoItemCommand> jsonPatchDocument)
         {
-            UpdatePatchToDoItemCommand command = new UpdatePatchToDoItemCommand();
-            command.ItemId = id;
-            command.JsonPatchDocument = jsonPatchDocument;
+            UpdatePatchToDoItemCommand command = new UpdatePatchToDoItemCommand
+            {
+                ItemId = id,
+                JsonPatchDocument = jsonPatchDocument
+            };
             return command;
         }
 
-        public UpdateToDoItemCommand ItemToCommand(Domain.Models.ToDoItem item)
+        public UpdateToDoItemCommand ItemToCommand(ToDoItem item)
         {
-            UpdateToDoItemCommand command = new UpdateToDoItemCommand();
-            command.ToDoItem = item;
+            UpdateToDoItemCommand command = new UpdateToDoItemCommand
+            {
+                ToDoItem = item
+            };
             return command;
         }
 
         public UpdatePatchToDoListCommand CommandToPatch(int id, JsonPatchDocument<UpdateToDoListCommand> jsonPatchDocument)
         {
-            UpdatePatchToDoListCommand command = new UpdatePatchToDoListCommand();
-            command.ItemId = id;
-            command.JsonPatchDocument = jsonPatchDocument;
+            UpdatePatchToDoListCommand command = new UpdatePatchToDoListCommand
+            {
+                ItemId = id,
+                JsonPatchDocument = jsonPatchDocument
+            };
             return command;
         }
 
         public UpdateToDoListCommand ListToCommand(BaseToDoList item)
         {
-            UpdateToDoListCommand command = new UpdateToDoListCommand();
-            command.ToDoList = item;
+            UpdateToDoListCommand command = new UpdateToDoListCommand
+            {
+                ToDoList = item
+            };
             return command;
         }
 
-        public UpdateToDoListCommand ListToCommand(Domain.Models.ToDoList item)
+        public UpdateToDoListCommand ListToCommand(ToDoList item)
         {
             throw new NotImplementedException();
         }

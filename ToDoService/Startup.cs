@@ -62,7 +62,7 @@ namespace ToDoService
                 x.AssumeDefaultVersionWhenUnspecified = true;
                 x.ReportApiVersions = true;
             });
-           
+
 
             ConfigurationManager.LoadConfigurationSettings(services, Configuration);
             services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();

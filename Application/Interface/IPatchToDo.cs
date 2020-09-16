@@ -1,7 +1,8 @@
-﻿using Application.ToDoItem.Command.PatchUpdateToDoItem;
-using Application.ToDoItem.Command.UpdateCommand;
-using Application.ToDoList.Command.UpdateCommand;
-using Application.ToDoList.PatchUpdateToDoList;
+﻿using Application.ToDoItems.Command.PatchUpdateToDoItem;
+using Application.ToDoItems.Command.UpdateCommand;
+using Application.ToDoLists.Command.UpdateCommand;
+using Application.ToDoLists.PatchUpdateToDoList;
+using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Interface
@@ -9,9 +10,9 @@ namespace Application.Interface
     public interface IPatchToDo
     {
         UpdatePatchToDoItemCommand CommandToPatch(int id, JsonPatchDocument<UpdateToDoItemCommand> jsonPatchDocument);
-        UpdateToDoItemCommand ItemToCommand(Domain.Models.ToDoItem item);
+        UpdateToDoItemCommand ItemToCommand(ToDoItem item);
 
         UpdatePatchToDoListCommand CommandToPatch(int id, JsonPatchDocument<UpdateToDoListCommand> jsonPatchDocument);
-        UpdateToDoListCommand ListToCommand(Domain.Models.ToDoList item);
+        UpdateToDoListCommand ListToCommand(ToDoList item);
     }
 }

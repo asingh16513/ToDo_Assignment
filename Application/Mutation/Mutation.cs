@@ -1,4 +1,5 @@
 ﻿using Application.Interface;
+using Domain.Models;
 using HotChocolate;
 using Persistence;
 using System.Threading.Tasks;
@@ -14,17 +15,15 @@ namespace Application.Mutation
         private readonly ILabelDBManager _labelDbService;
         private readonly IToDoListDbManager _todoListService;
         private readonly IToDoItemDbManager _todoitemService;
-        private readonly IUserManager _userManager;
 
         public Mutation([Service] ILabelDBManager labelDbService, IToDoItemDbManager service,
-           IToDoListDbManager todoListService, [Service]IUserManager userManager)
+           IToDoListDbManager todoListService)
         {
             _todoListService = todoListService;
             _todoitemService = service;
-            _userManager = userManager;
             _labelDbService = labelDbService;
         }
-        
+
         /// <summary>
         /// Mutation to add label
         /// </summary>
@@ -72,7 +71,7 @@ namespace Application.Mutation
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<int> AddToDoItem(Domain.Models.ToDoItem item)
+        public async Task<int> AddToDoItem(ToDoItem item)
         {
             return await _todoitemService.AddToDoItem(item);
         }
@@ -93,7 +92,7 @@ namespace Application.Mutation
         /// <param name="itemId"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<int> UpdateToDoItem(int itemId, Domain.Models.ToDoItem item)
+        public async Task<int> UpdateToDoItem(int itemId, ToDoItem item)
         {
             item.Id = itemId;
             return await _todoitemService.UpdateToDoItem(item);
@@ -104,7 +103,7 @@ namespace Application.Mutation
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<int> AddToDoList(Domain.Models.ToDoList item)
+        public async Task<int> AddToDoList(ToDoList item)
         {
             return await _todoListService.AddToDoList(item);
         }
@@ -126,7 +125,7 @@ namespace Application.Mutation
         /// <param name="itemId"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<int> UpdateToDoList(int itemId, Domain.Models.ToDoList item)
+        public async Task<int> UpdateToDoList(int itemId, ToDoList item)
         {
             item.Id = itemId;
             return await _todoListService.UpdateToDoList(item);
